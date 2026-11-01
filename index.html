@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Log do Servidor (SSe)</h1>
+  <div id="log">Recebendo mensagens...</div>
+
+  <script>
+    const eventSource = new EventSource('http://localhost:8080/events');
+    eventSource.addEventListener('notification', function(event) {
+      document.getElementById('log').innerHTML = event.data;
+    });
+
+  </script>
+</body>
+</html>
+
+<!-- 
+GET /events HTTP/1.1
+Host: localhost:8080
+Accept: text/event-stream
+Cache-Control: no-cache
+-->

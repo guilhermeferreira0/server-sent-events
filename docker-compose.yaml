@@ -1,0 +1,28 @@
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sse_network
+
+  server:
+    image: node:20-alpine
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: sh -c "npm install && npx nodemon main.js"
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - REDIS_HOST=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - sse_network
+
+networks:
+  sse_network:
+    driver: bridge
